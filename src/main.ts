@@ -3,7 +3,16 @@ import App from './App.vue';
 import './registerServiceWorker';
 import router from './router';
 import store from './store';
-import { Button, Input, Layout, Menu, Icon } from 'ant-design-vue';
+import {
+  Button,
+  Input,
+  Layout,
+  Menu,
+  Icon,
+  Table,
+  Tag,
+  Divider
+} from 'ant-design-vue';
 import 'ant-design-vue/dist/antd.css';
 
 Vue.component(Button.name, Button);
@@ -16,6 +25,9 @@ Vue.component(Layout.Sider.name, Layout.Sider);
 Vue.component(Menu.name, Menu);
 Vue.component(Menu.Item.name, Menu.Item);
 Vue.component(Icon.name, Icon);
+Vue.component(Tag.name, Tag);
+Vue.component(Table.name, Table);
+Vue.component(Divider.name, Divider);
 
 Vue.config.productionTip = false;
 
