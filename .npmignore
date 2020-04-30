@@ -3,6 +3,7 @@ src/
 tests/
 .browserslistrc
 .eslintrc.js
+.prettierrc
 babel.config.js
 exp.ts
 jest.config.js

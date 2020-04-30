@@ -6,13 +6,17 @@
     <br />
     <a-input-password placeholder="密码" allowClear />
     <a-button type="primary">登录</a-button>
+    <Loading />
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
+import Loading from '@/components/Loading.vue';
 
-@Component
+@Component({
+  components: { Loading }
+})
 export default class Login extends Vue {
   @Prop() private msg!: string;
 }
