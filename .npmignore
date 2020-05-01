@@ -9,3 +9,4 @@ exp.ts
 jest.config.js
 tsconfig.json
 vue.config.js
+.vscode
