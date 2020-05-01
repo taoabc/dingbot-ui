@@ -11,7 +11,8 @@ import {
   Icon,
   Table,
   Tag,
-  Divider
+  Divider,
+  Modal
 } from 'ant-design-vue';
 import 'ant-design-vue/dist/antd.css';
 
@@ -28,6 +29,7 @@ Vue.component(Icon.name, Icon);
 Vue.component(Tag.name, Tag);
 Vue.component(Table.name, Table);
 Vue.component(Divider.name, Divider);
+Vue.component(Modal.name, Modal);
 
 Vue.config.productionTip = false;
 

@@ -1,6 +1,8 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import axios from 'axios';
+import _ from 'lodash';
+import { UserInfo, Employee, Signkey } from './type';
 
 const config = {
   baseURL: 'http://localhost:8001',
@@ -9,36 +11,21 @@ const config = {
 
 Vue.use(Vuex);
 
-interface UserInfo {
-  uid: string;
-  nick: string;
-  group: string;
-  token: string;
-}
-
-interface Employee {
-  key: string;
-  realName: string;
-  authorEmail: string;
-  authorName: string;
-  userEmail: string;
-  userName: string;
-  phone: string;
-}
-
 interface State {
   userInfo: UserInfo;
   employee: Employee[];
+  signKey: Signkey[];
 }
 
 const defUserInfo: UserInfo = { uid: '', nick: '', group: '', token: '' };
 
 const state: State = {
   userInfo: defUserInfo,
-  employee: []
+  employee: [],
+  signKey: []
 };
 
-export default new Vuex.Store({
+const store = new Vuex.Store({
   state,
 
   mutations: {
@@ -46,15 +33,57 @@ export default new Vuex.Store({
       state.userInfo = userInfo;
     },
 
-    updateEmployee(state, employee) {
+    updateAllEmployee(state, employee) {
       state.employee = employee;
+    },
+
+    addEmployee(state, employee) {
+      state.employee.push(employee);
+    },
+
+    updateEmployee(state, employee: Employee) {
+      const employeeCloned = _.cloneDeep(state.employee);
+      const i = _.findIndex(employeeCloned, { userName: employee.userName });
+      if (i >= 0) {
+        employeeCloned[i] = { ...employeeCloned[i], ...employee };
+        state.employee = employeeCloned;
+      }
+    },
+
+    removeEmployee(state, userName) {
+      const employeeCloned = _.cloneDeep(state.employee);
+      _.remove(employeeCloned, (emp: Employee) => emp.userName === userName);
+      state.employee = employeeCloned;
+    },
+
+    updateAllSignKey(state, signKey) {
+      state.signKey = signKey;
+    },
+
+    addSignkey(state, signKey) {
+      state.signKey.push(signKey);
+    },
+
+    removeSignkey(state, token: string) {
+      const cloned = _.cloneDeep(state.signKey);
+      _.remove(cloned, (sk: Signkey) => sk.token === token);
+      state.signKey = cloned;
+    },
+
+    updateSignkey(state, signKey) {
+      const cloned = _.cloneDeep(state.signKey);
+      const i = _.findIndex(cloned, { token: signKey.token });
+      if (i >= 0) {
+        cloned[i] = { ...cloned[i], ...signKey };
+        state.signKey = cloned;
+      }
     }
   },
 
   actions: {
     async login(context, { uid, password }) {
       const res = await axios.post('/user/login', { uid, password }, config);
-      if (res.data?.code === 0) {
+      if (res.data.code === 'OK') {
         config.headers['X-token'] = res.data.data.token;
         context.commit('updateUserInfo', {
           ...defUserInfo,
@@ -72,12 +101,65 @@ export default new Vuex.Store({
 
     async getAllEmployee(context) {
       const res = await axios.post('/employee/getAll', null, config);
-      if (res.data?.code === 0) {
-        const employee = [];
+      if (res.data.code === 'OK') {
         for (const emp of res.data.data) {
-          emp.key = emp.username;
+          emp.key = emp.userName;
         }
-        context.commit('updateEmployee', res.data.data);
+        context.commit('updateAllEmployee', res.data.data);
+      }
+    },
+
+    async removeEmployee(context, userName: string) {
+      const res = await axios.post('/employee/remove', { userName }, config);
+      if (res.data.code === 'OK') {
+        context.commit('removeEmployee', userName);
+      }
+    },
+
+    async updateEmployee(context, info) {
+      const res = await axios.post('/employee/update', info, config);
+      if (res.data.code === 'OK') {
+        context.commit('updateEmployee', info);
+      }
+    },
+
+    async addEmployee(context, emp) {
+      const res = await axios.post('/employee/add', emp, config);
+      if (res.data.code === 'OK') {
+        emp.key = emp.userName;
+        context.commit('addEmployee', emp);
+      }
+    },
+
+    async getAllSignKey(context) {
+      const res = await axios.post('/signkey/getAll', null, config);
+      if (res.data.code === 'OK') {
+        for (const k of res.data.data) {
+          k.key = k.token;
+        }
+        context.commit('updateAllSignKey', res.data.data);
+      }
+    },
+
+    async removeSignkey(context, token: string) {
+      const res = await axios.post('/signkey/remove', { token }, config);
+      if (res.data.code === 'OK') {
+        context.commit('removeSignkey', token);
+      }
+    },
+
+    async addSignkey(context, sk) {
+      const res = await axios.post('/signkey/add', sk, config);
+      if (res.data.code === 'OK') {
+        sk.key = sk.token;
+        context.commit('addSignkey', sk);
+      }
+    },
+
+    async updateSignkey(context, sk) {
+      const res = await axios.post('/signkey/update', sk, config);
+      if (res.data.code === 'OK') {
+        context.commit('updateSignkey', sk);
       }
     }
   },
@@ -89,8 +171,14 @@ export default new Vuex.Store({
 
     allEmployee(state) {
       return state.employee;
+    },
+
+    allSignkey(state) {
+      return state.signKey;
     }
   },
 
   modules: {}
 });
+
+export default store;

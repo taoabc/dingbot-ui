@@ -20,7 +20,7 @@
           <a-icon type="setting" />
           <span>帐号设置</span>
         </a-menu-item>
-        <a-menu-item key="/login">
+        <a-menu-item key="logout">
           <a-icon type="logout" />
           <span>退出登录</span>
         </a-menu-item>
@@ -43,22 +43,38 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
+import { Component, Vue, Watch } from 'vue-property-decorator';
 import Loading from '@/components/Loading.vue';
+import { Action, Getter } from 'vuex-class';
 
 @Component({
   components: { Loading }
 })
-export default class Login extends Vue {
+export default class Home extends Vue {
+  @Getter isLogged!: boolean;
+  @Action logout!: () => void;
+
   created() {
-    this.$router.push('/user');
+    if (!this.isLogged) {
+      this.$router.push('/login');
+    } else {
+      this.$router.push('/user');
+    }
+  }
+
+  @Watch('isLogged')
+  onIsLoggedChange(val: boolean) {
+    if (!val) {
+      this.$router.push('/login');
+    }
   }
 
   onMenuSelect({ key }: { key: string }) {
     if (key === 'logout') {
-      console.log('logout');
+      this.logout();
+    } else {
+      this.$router.push(key);
     }
-    this.$router.push(key);
   }
 }
 </script>

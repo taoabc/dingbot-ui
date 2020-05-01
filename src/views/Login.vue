@@ -12,7 +12,7 @@
     </div>
     <!-- <a-input placeholder="用户名" allowClear />
     <a-input-password placeholder="密码" allowClear />
-    <a-button type="primary">登录</a-button> -->
+    <a-button type="primary">登录</a-button>-->
     <div class="log-action">
       <a-input
         class="log-input"
@@ -25,11 +25,12 @@
         placeholder="密码"
         allowClear
         v-model="password"
+        @keypress.enter="login"
       />
       <a-button class="log-btn" type="primary" @click="login">登录</a-button>
       <!-- <input type="text" placeholder="Email" :class="'log-input' + (account==''?' log-input-empty':'')" v-model="account">
         <input type="password" placeholder="Password" :class="'log-input' + (password==''?' log-input-empty':'')"  v-model="password">
-        <a href="javascript:;" class="log-btn" @click="login">Login</a> -->
+      <a href="javascript:;" class="log-btn" @click="login">Login</a>-->
     </div>
     <Loading v-if="isLoging" marginTop="-30%"></Loading>
   </div>
@@ -37,22 +38,22 @@
 
 <script lang="ts">
 import { Component, Vue, Watch } from 'vue-property-decorator';
-import { mapGetters } from 'vuex';
+import { Getter } from 'vuex-class';
 import Loading from '@/components/Loading.vue';
 
 @Component({
-  components: { Loading },
-  computed: {
-    ...mapGetters(['isLogged'])
-  }
+  components: { Loading }
 })
 export default class Login extends Vue {
+  @Getter isLogged!: boolean;
+
   private isLoging = false;
   private username = '';
   private password = '';
 
   @Watch('isLogged')
-  onLoggedChange(val: boolean, oldVal: boolean) {
+  onLoggedChange(val: boolean) {
+    console.log('logged changed', val);
     if (val) {
       this.$router.push('/');
     }
