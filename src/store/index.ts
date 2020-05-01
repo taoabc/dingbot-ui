@@ -5,7 +5,8 @@ import _ from 'lodash';
 import { UserInfo, Employee, Signkey } from './type';
 
 const config = {
-  baseURL: 'http://localhost:8001',
+  baseURL:
+    process.env.NODE_ENV === 'production' ? '/' : 'http://localhost:8001',
   headers: {} as { [key: string]: string | undefined }
 };
 
