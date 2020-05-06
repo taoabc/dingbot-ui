@@ -4,7 +4,7 @@
   "main": "exp.js",
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build && npm run build:exp",
+    "build": "npm run build:exp && vue-cli-service build",
     "test:unit": "vue-cli-service test:unit",
     "lint": "vue-cli-service lint",
     "build:exp": "tsc exp.ts --esModuleInterop --declaration"
