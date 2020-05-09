@@ -1,5 +1,5 @@
 import Vue from 'vue';
-import Vuex from 'vuex';
+import Vuex, { Store } from 'vuex';
 import axios from 'axios';
 import _ from 'lodash';
 import { UserInfo, Employee, Signkey } from './type';
@@ -20,8 +20,21 @@ interface State {
 
 const defUserInfo: UserInfo = { uid: '', nick: '', group: '', token: '' };
 
+function getStorageUserInfo(): UserInfo {
+  const str = localStorage.getItem('user-info');
+  if (str) {
+    try {
+      return JSON.parse(str);
+    } catch {
+      // storage error
+      localStorage.removeItem('user-info');
+    }
+  }
+  return defUserInfo;
+}
+
 const state: State = {
-  userInfo: defUserInfo,
+  userInfo: getStorageUserInfo(),
   employee: [],
   signKey: []
 };
@@ -32,6 +45,7 @@ const store = new Vuex.Store({
   mutations: {
     updateUserInfo(state, userInfo) {
       state.userInfo = userInfo;
+      localStorage.setItem('user-info', JSON.stringify(userInfo));
     },
 
     updateAllEmployee(state, employee) {
@@ -84,6 +98,7 @@ const store = new Vuex.Store({
   actions: {
     async login(context, { uid, password }) {
       const res = await axios.post('/user/login', { uid, password }, config);
+      // login success
       if (res.data.code === 'OK') {
         config.headers['X-token'] = res.data.data.token;
         context.commit('updateUserInfo', {
@@ -181,5 +196,19 @@ const store = new Vuex.Store({
 
   modules: {}
 });
+
+axios.interceptors.response.use(
+  function(response) {
+    if (response.data.code === 'E_INVALID_TOKEN') {
+      store.dispatch('logout');
+    }
+    return response;
+  },
+  function(error) {
+    // Any status codes that falls outside the range of 2xx cause this function to trigger
+    // Do something with response error
+    return Promise.reject(error);
+  }
+);
 
 export default store;
