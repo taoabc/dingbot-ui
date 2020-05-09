@@ -8,7 +8,7 @@
       <div class="log-cloud cloud4"></div>
 
       <div class="log-logo">Welcome to dingbot!</div>
-      <div class="log-text">@培优线下前端组</div>
+      <div class="log-text">@OMO平台研发前端组</div>
     </div>
     <!-- <a-input placeholder="用户名" allowClear />
     <a-input-password placeholder="密码" allowClear />
@@ -42,7 +42,7 @@ import { Getter } from 'vuex-class';
 import Loading from '@/components/Loading.vue';
 
 @Component({
-  components: { Loading }
+  components: { Loading },
 })
 export default class Login extends Vue {
   @Getter isLogged!: boolean;
@@ -63,7 +63,7 @@ export default class Login extends Vue {
     if (this.username !== '' && this.password !== '') {
       this.$store.dispatch('login', {
         uid: this.username,
-        password: this.password
+        password: this.password,
       });
     }
   }
