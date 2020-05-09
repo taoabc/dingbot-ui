@@ -1,5 +1,5 @@
 import Vue from 'vue';
-import Vuex, { Store } from 'vuex';
+import Vuex from 'vuex';
 import axios from 'axios';
 import _ from 'lodash';
 import { UserInfo, Employee, Signkey } from './type';
@@ -105,8 +105,10 @@ const store = new Vuex.Store({
           ...defUserInfo,
           ...res.data.data
         });
+        return true;
       } else {
         context.dispatch('logout');
+        return false;
       }
     },
 

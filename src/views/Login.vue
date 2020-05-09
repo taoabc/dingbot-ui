@@ -19,15 +19,18 @@
         placeholder="用户名"
         allowClear
         v-model="username"
+        @keypress.enter="thisLogin"
       />
       <a-input-password
         class="log-input"
         placeholder="密码"
         allowClear
         v-model="password"
-        @keypress.enter="login"
+        @keypress.enter="thisLogin"
       />
-      <a-button class="log-btn" type="primary" @click="login">登录</a-button>
+      <a-button class="log-btn" type="primary" @click="thisLogin">
+        登录
+      </a-button>
       <!-- <input type="text" placeholder="Email" :class="'log-input' + (account==''?' log-input-empty':'')" v-model="account">
         <input type="password" placeholder="Password" :class="'log-input' + (password==''?' log-input-empty':'')"  v-model="password">
       <a href="javascript:;" class="log-btn" @click="login">Login</a>-->
@@ -38,7 +41,8 @@
 
 <script lang="ts">
 import { Component, Vue, Watch } from 'vue-property-decorator';
-import { Getter } from 'vuex-class';
+import { Getter, Action } from 'vuex-class';
+import { message } from 'ant-design-vue';
 import Loading from '@/components/Loading.vue';
 
 @Component({
@@ -46,6 +50,7 @@ import Loading from '@/components/Loading.vue';
 })
 export default class Login extends Vue {
   @Getter isLogged!: boolean;
+  @Action login!: (info: { uid: string; password: string }) => Promise<boolean>;
 
   private isLoging = false;
   private username = '';
@@ -59,12 +64,15 @@ export default class Login extends Vue {
     }
   }
 
-  login() {
-    if (this.username !== '' && this.password !== '') {
-      this.$store.dispatch('login', {
+  async thisLogin() {
+    if (this.username.length > 0 && this.password.length > 0) {
+      const ret = await this.login({
         uid: this.username,
         password: this.password
       });
+      if (!ret) {
+        message.warning('登录失败，请检查用户名密码');
+      }
     }
   }
 }
