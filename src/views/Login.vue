@@ -42,7 +42,7 @@ import { Getter } from 'vuex-class';
 import Loading from '@/components/Loading.vue';
 
 @Component({
-  components: { Loading },
+  components: { Loading }
 })
 export default class Login extends Vue {
   @Getter isLogged!: boolean;
@@ -53,7 +53,7 @@ export default class Login extends Vue {
 
   @Watch('isLogged')
   onLoggedChange(val: boolean) {
-    console.log('logged changed', val);
+    // console.log('logged changed', val);
     if (val) {
       this.$router.push('/');
     }
@@ -63,7 +63,7 @@ export default class Login extends Vue {
     if (this.username !== '' && this.password !== '') {
       this.$store.dispatch('login', {
         uid: this.username,
-        password: this.password,
+        password: this.password
       });
     }
   }
