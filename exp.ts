@@ -5,5 +5,5 @@ export function rootPath(): string {
 }
 
 export function staticRrefix(): string {
-  return '--web-static--';
+  return 'admin/--web-static--';
 }
