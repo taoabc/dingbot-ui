@@ -33,7 +33,7 @@
           margin: '24px 16px',
           padding: '24px',
           background: '#fff',
-          minHeight: '360px'
+          minHeight: '360px',
         }"
       >
         <router-view />
@@ -48,7 +48,7 @@ import Loading from '@/components/Loading.vue';
 import { Action, Getter } from 'vuex-class';
 
 @Component({
-  components: { Loading }
+  components: { Loading },
 })
 export default class Home extends Vue {
   @Getter isLogged!: boolean;

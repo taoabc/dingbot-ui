@@ -32,18 +32,18 @@ import SignKeyEdit from './SignKeyEdit.vue';
 const COLUMNS = [
   {
     title: '机器人token',
-    dataIndex: 'token'
+    dataIndex: 'token',
   },
 
   {
     title: '操作',
     key: 'action',
-    scopedSlots: { customRender: 'action' }
-  }
+    scopedSlots: { customRender: 'action' },
+  },
 ];
 
 @Component({
-  components: { SignKeyEdit }
+  components: { SignKeyEdit },
 })
 export default class SignKeyList extends Vue {
   @Getter('allSignkey') data!: Signkey[];
@@ -79,13 +79,13 @@ export default class SignKeyList extends Vue {
     const removeSignkey = this.removeSignkey.bind(this);
     Modal.confirm({
       title: `确定删除 ${key} 吗？`,
-      content: null, //'确定删除用户：xxx吗？',
+      content: null,
       onOk() {
         return removeSignkey(key);
       },
       onCancel() {
         //
-      }
+      },
     });
   }
 

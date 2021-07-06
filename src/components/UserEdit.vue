@@ -84,7 +84,7 @@ export default class UserEdit extends Vue {
       'authorName',
       'authorEmail',
       'realName',
-      'phone'
+      'phone',
     ];
     let changed = false;
     const info: { [key: string]: string } = { userName: this.userName };
@@ -108,7 +108,7 @@ export default class UserEdit extends Vue {
       authorName: this.authorName,
       authorEmail: this.authorEmail,
       realName: this.realName,
-      phone: this.phone
+      phone: this.phone,
     };
     this.confirmLoading = true;
     await this.addEmployee(emp);
@@ -122,7 +122,7 @@ export default class UserEdit extends Vue {
       this.authorName,
       this.authorEmail,
       this.realName,
-      this.phone
+      this.phone,
     ]);
   }
 

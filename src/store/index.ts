@@ -7,7 +7,7 @@ import { UserInfo, Employee, Signkey } from './type';
 const config = {
   baseURL:
     process.env.NODE_ENV === 'production' ? '/' : 'http://localhost:8001',
-  headers: {} as { [key: string]: string | undefined }
+  headers: {} as { [key: string]: string | undefined },
 };
 
 Vue.use(Vuex);
@@ -36,7 +36,7 @@ function getStorageUserInfo(): UserInfo {
 const state: State = {
   userInfo: getStorageUserInfo(),
   employee: [],
-  signKey: []
+  signKey: [],
 };
 
 const store = new Vuex.Store({
@@ -92,7 +92,7 @@ const store = new Vuex.Store({
         cloned[i] = { ...cloned[i], ...signKey };
         state.signKey = cloned;
       }
-    }
+    },
   },
 
   actions: {
@@ -103,7 +103,7 @@ const store = new Vuex.Store({
         config.headers['X-token'] = res.data.data.token;
         context.commit('updateUserInfo', {
           ...defUserInfo,
-          ...res.data.data
+          ...res.data.data,
         });
         return true;
       } else {
@@ -179,7 +179,7 @@ const store = new Vuex.Store({
       if (res.data.code === 'OK') {
         context.commit('updateSignkey', sk);
       }
-    }
+    },
   },
 
   getters: {
@@ -193,20 +193,20 @@ const store = new Vuex.Store({
 
     allSignkey(state) {
       return state.signKey;
-    }
+    },
   },
 
-  modules: {}
+  modules: {},
 });
 
 axios.interceptors.response.use(
-  function(response) {
+  function (response) {
     if (response.data.code === 'E_INVALID_TOKEN') {
       store.dispatch('logout');
     }
     return response;
   },
-  function(error) {
+  function (error) {
     // Any status codes that falls outside the range of 2xx cause this function to trigger
     // Do something with response error
     return Promise.reject(error);

@@ -64,7 +64,7 @@ export default class SignKeyEdit extends Vue {
   async add() {
     const sk = {
       token: this.token,
-      signKey: this.signKey
+      signKey: this.signKey,
     };
     this.confirmLoading = true;
     await this.addSignkey(sk);

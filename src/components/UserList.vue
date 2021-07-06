@@ -35,33 +35,33 @@ import { Modal } from 'ant-design-vue';
 const USER_COLUMNS = [
   {
     dataIndex: 'userName',
-    slots: { title: 'customTitle' }
+    slots: { title: 'customTitle' },
   },
   {
     title: 'gitlab邮箱',
-    dataIndex: 'userEmail'
+    dataIndex: 'userEmail',
   },
   {
     title: '姓名',
-    dataIndex: 'realName'
+    dataIndex: 'realName',
   },
   {
     title: 'git.user',
-    dataIndex: 'authorName'
+    dataIndex: 'authorName',
   },
   {
     title: 'git.email',
-    dataIndex: 'authorEmail'
+    dataIndex: 'authorEmail',
   },
   {
     title: '电话',
-    dataIndex: 'phone'
+    dataIndex: 'phone',
   },
   {
     title: '操作',
     key: 'action',
-    scopedSlots: { customRender: 'action' }
-  }
+    scopedSlots: { customRender: 'action' },
+  },
 ];
 
 @Component({ components: { UserEdit } })
@@ -102,7 +102,7 @@ export default class UserList extends Vue {
       },
       onCancel() {
         //
-      }
+      },
     });
   }
 

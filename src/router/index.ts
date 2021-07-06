@@ -15,27 +15,27 @@ const routes: Array<RouteConfig> = [
     children: [
       {
         path: 'user',
-        component: UserList
+        component: UserList,
       },
       {
         path: 'signkey',
-        component: SignKeyList
+        component: SignKeyList,
       },
       {
         path: 'setting',
-        component: Setting
-      }
-    ]
+        component: Setting,
+      },
+    ],
   },
   {
     path: '/login',
     name: 'Login',
-    component: () => import('../views/Login.vue')
-  }
+    component: () => import('../views/Login.vue'),
+  },
 ];
 
 const router = new VueRouter({
-  routes
+  routes,
 });
 
 export default router;

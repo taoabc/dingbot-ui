@@ -46,7 +46,7 @@ import { message } from 'ant-design-vue';
 import Loading from '@/components/Loading.vue';
 
 @Component({
-  components: { Loading }
+  components: { Loading },
 })
 export default class Login extends Vue {
   @Getter isLogged!: boolean;
@@ -68,7 +68,7 @@ export default class Login extends Vue {
     if (this.username.length > 0 && this.password.length > 0) {
       const ret = await this.login({
         uid: this.username,
-        password: this.password
+        password: this.password,
       });
       if (!ret) {
         message.warning('登录失败，请检查用户名密码');
